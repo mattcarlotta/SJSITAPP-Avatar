@@ -1,0 +1,81 @@
+{
+  "name": "sjsitapp-avatar",
+  "version": "0.0.1",
+  "main": "app.js",
+  "description": "An application for the San Jose Sharks Ice Team.",
+  "repository": "https://github.com/mattcarlotta/SJSITApp-Avatar",
+  "author": "Matt Carlotta",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=8",
+    "npm": ">=3"
+  },
+  "scripts": {
+    "checkbuild": "npm run checkbuild --prefix client",
+    "compile": "rimraf build && babel ./ -d build --no-comments --ignore node_modules,client,**/__tests__,coverage,setupTests.js,**/__mocks__",
+    "lintjs": "eslint -c ./.eslintrc --ignore-path ./.eslintignore ./ --ext .js,.jsx",
+    "test": "NODE_ENV=test WATCHING=true jest --config ./jest.json --watchAll",
+    "start": "NODE_ENV=production node ./build/app.js",
+    "seed": "NODE_ENV=config babel-node ./utils/seedDB.js",
+    "teardown": "NODE_ENV=config babel-node ./utils/teardownDB.js",
+    "dev": "NODE_ENV=development nodemon --exec babel-node ./app.js",
+    "lint": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "NODE_ENV=test jest --config ./jest.json --findRelatedTests",
+      "git add"
+    ]
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "uploads"
+    ]
+  },
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "body-parser": "^1.18.3",
+    "chalk": "^4.0.0",
+    "compression": "^1.7.4",
+    "cookie-session": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.16.4",
+    "fs-extra": "^8.1.0",
+    "lodash.get": "^4.4.2",
+    "lodash.random": "^3.2.0",
+    "mkdirp": "^0.5.1",
+    "moment-timezone": "^0.5.27",
+    "mongoose": "^5.9.7",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.1",
+    "sharp": "^0.24.0",
+    "supertest": "^4.0.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@babel/node": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "babel-jest": "^24.7.1",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "es-check": "^5.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-import-resolver-babel-module": "^5.0.1",
+    "eslint-plugin-import": "^2.14.0",
+    "husky": "^4.0.10",
+    "jest": "^24.5.0",
+    "lint-staged": "^10.0.1",
+    "nodemon": "^2.0.2",
+    "prettier": "^1.14.3",
+    "rimraf": "^3.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  }
+}

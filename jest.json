@@ -1,0 +1,14 @@
+{
+  "testEnvironment": "node",
+  "verbose": false,
+  "clearMocks": true,
+  "modulePaths": ["<rootDir>", "node_modules"],
+  "setupFilesAfterEnv": ["<rootDir>/setupTests.js"],
+  "transform": {
+    "^.+\\.(js)$": "babel-jest"
+  },
+  "moduleFileExtensions": ["js", "json"],
+  "testPathIgnorePatterns": ["<rootDir>/node_modules/"],
+  "globalSetup": "<rootDir>/utils/seedDB.js",
+  "globalTeardown": "<rootDir>/utils/teardownDB.js"
+}
