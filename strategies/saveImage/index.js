@@ -1,4 +1,3 @@
-import fs from "fs-extra";
 import mkdir from "mkdirp";
 import sharp from "sharp";
 import { createRandomString, sendError } from "~utils/helpers";
@@ -24,18 +23,14 @@ export default async (req, res, next) => {
       })
     );
 
-    if (/\.(gif|bmp)$/i.test(originalname)) {
-      await fs.outputFile(filepath, buffer);
-    } else {
-      await sharp(buffer)
-        .resize({
-          width: 256,
-          height: 256,
-          fit: "cover",
-          withoutEnlargement: true,
-        })
-        .toFile(filepath);
-    }
+    await sharp(buffer)
+      .resize({
+        width: 256,
+        height: 256,
+        fit: "cover",
+        withoutEnlargement: true,
+      })
+      .toFile(filepath);
 
     req.file.avatar = `${API}/${filepath}`;
     req.file.avatarPath = filepath;

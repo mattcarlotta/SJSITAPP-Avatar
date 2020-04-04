@@ -35,7 +35,7 @@ export default (app) => {
         fields: 1,
       },
       fileFilter: (req, file, next) => {
-        if (!/\.(jpe?g|png|gif|bmp)$/i.test(file.originalname)) {
+        if (!/\.(jpe?g|png)$/i.test(file.originalname)) {
           req.err = "That file extension is not accepted!";
           next(null, false);
         }
