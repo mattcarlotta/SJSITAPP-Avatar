@@ -20,9 +20,10 @@ const deleteUserAvatar = async (req, res) => {
     const exisitingUser = await User.findOne({ _id });
     if (!exisitingUser) throw String(unableToLocateUser);
 
-    if (exisitingUser.avatarPath) await fs.remove(exisitingUser.avatarPath);
+    if (exisitingUser.avatar)
+      await fs.remove(`uploads/${exisitingUser.avatar}`);
 
-    await exisitingUser.updateOne({ avatar: "", avatarPath: "" });
+    await exisitingUser.updateOne({ avatar: "" });
 
     res
       .status(200)
@@ -45,15 +46,16 @@ const deleteUserAvatar = async (req, res) => {
 const updateUserAvatar = async (req, res) => {
   try {
     const { id: _id } = req.params;
-    const { avatar, avatarPath } = req.file;
-    if (!avatar || !avatarPath) throw String(unableToLocateFile);
+    const { avatar } = req.file;
+    if (!avatar) throw String(unableToLocateFile);
 
     const exisitingUser = await User.findOne({ _id });
     if (!exisitingUser) throw String(unableToLocateUser);
 
-    if (exisitingUser.avatarPath) await fs.remove(exisitingUser.avatarPath);
+    if (exisitingUser.avatar)
+      await fs.remove(`uploads/${exisitingUser.avatar}`);
 
-    await exisitingUser.updateOne({ avatar, avatarPath }, { upsert: true });
+    await exisitingUser.updateOne({ avatar }, { upsert: true });
 
     res
       .status(200)

@@ -1,39 +1,34 @@
 import mkdir from "mkdirp";
 import sharp from "sharp";
-import { createRandomString, sendError } from "~utils/helpers";
+import { sendError } from "~utils/helpers";
 import { unableToProcessFile } from "~utils/errors";
+import { v4 as uuid } from "uuid";
 
-const { API } = process.env;
 const currentDirectory = process.cwd();
 
 export default async (req, res, next) => {
   try {
     if (req.err || !req.file) throw String(req.error || unableToProcessFile);
 
-    const {
-      file: { buffer, originalname },
-    } = req;
-
-    const filename = `${Date.now()}-${createRandomString()}-${originalname}`;
+    const filename = `${uuid()}.png`;
     const filepath = `uploads/${filename}`;
 
     await new Promise((resolve, reject) =>
-      mkdir(`${currentDirectory}/uploads`, (err) => {
+      mkdir(`${currentDirectory}/uploads`, err => {
         !err ? resolve() : reject(err);
       })
     );
 
-    await sharp(buffer)
+    await sharp(req.file.buffer)
       .resize({
         width: 256,
         height: 256,
         fit: "cover",
-        withoutEnlargement: true,
+        withoutEnlargement: true
       })
       .toFile(filepath);
 
-    req.file.avatar = `${API}/${filepath}`;
-    req.file.avatarPath = filepath;
+    req.file.avatar = filename;
 
     next();
   } catch (err) {

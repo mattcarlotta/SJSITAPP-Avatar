@@ -10,6 +10,7 @@ build
 
 #Server files and folders
 uploads/
+images/
 scrap/
 prod.json
 flightplan.js

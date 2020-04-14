@@ -3,11 +3,10 @@ import { Schema, model } from "mongoose";
 // admin, staff, employee
 const userSchema = new Schema({
   avatar: { type: String, default: "" },
-  avatarPath: { type: String, default: "" },
   email: {
     type: String,
     unique: true,
-    lowercase: true,
+    lowercase: true
   },
   role: { type: String, default: "employee" },
   status: { type: String, default: "active" },
@@ -16,10 +15,10 @@ const userSchema = new Schema({
   password: { type: String, required: true },
   registered: {
     type: Date,
-    required: true,
+    required: true
   },
   token: { type: String, unique: true },
-  emailReminders: { type: Boolean, default: true },
+  emailReminders: { type: Boolean, default: true }
 });
 
 export default model("User", userSchema);

@@ -25,24 +25,12 @@ const createRandomToken = () =>
   );
 
 /**
- * Helper function to create a random string.
- *
- * @function createRandomString
- * @returns {String}
- */
-const createRandomString = () =>
-  tokenGenerator(
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-    8
-  );
-
-/**
  * Helper function to parse req.session.
  *
  * @function parseSession
  * @returns {string}
  */
-const parseSession = (req) => get(req, ["session", "user", "id"]);
+const parseSession = req => get(req, ["session", "user", "id"]);
 
 /**
  * Helper function to send an error to the client.
@@ -53,4 +41,4 @@ const parseSession = (req) => get(req, ["session", "user", "id"]);
 const sendError = (err, statusCode, res) =>
   res.status(statusCode).json({ err: err.toString() });
 
-export { createRandomToken, createRandomString, parseSession, sendError };
+export { createRandomToken, parseSession, sendError };
