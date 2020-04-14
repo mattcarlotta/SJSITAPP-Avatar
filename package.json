@@ -1,9 +1,9 @@
 {
-  "name": "sjsitapp-avatar",
+  "name": "sjsitapp-image-service",
   "version": "0.0.1",
   "main": "app.js",
   "description": "An application for the San Jose Sharks Ice Team.",
-  "repository": "https://github.com/mattcarlotta/SJSITApp-Avatar",
+  "repository": "https://github.com/mattcarlotta/SJSITApp-Image",
   "author": "Matt Carlotta",
   "license": "MIT",
   "private": true,
