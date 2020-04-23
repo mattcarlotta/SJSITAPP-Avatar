@@ -20,6 +20,7 @@
     "seed": "NODE_ENV=config babel-node ./utils/seedDB.js",
     "teardown": "NODE_ENV=config babel-node ./utils/teardownDB.js",
     "dev": "NODE_ENV=development nodemon --exec babel-node ./app.js",
+    "stage": "NODE_ENV=staging nodemon --exec babel-node ./app.js",
     "lint": "lint-staged"
   },
   "lint-staged": {
