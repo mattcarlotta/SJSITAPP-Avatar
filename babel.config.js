@@ -1,27 +1,8 @@
-const { readdirSync, statSync } = require("fs");
-const { resolve } = require("path");
+const aliasDirs = require("alias-dirs");
+const { ignoreDirectories } = aliasDirs;
 
-const ignoreFolders = /(\.git)|(node_modules)/;
-
-const readDirectory = path =>
-  readdirSync(path).reduce((acc, folder) => {
-    const dirPath = `${path}${folder}`;
-    if (
-      !folder.match(ignoreFolders) &&
-      statSync(resolve(dirPath)).isDirectory()
-    ) {
-      acc[`~${folder.replace(/[^\w\s]/gi, "")}`] = dirPath;
-    }
-
-    return acc;
-  }, {});
-
-const alias = {
-  ...readDirectory("./")
-};
-
-module.exports = api => {
-  api.cache(true);
+module.exports = (api) => {
+  api.cache.using(() => process.env.NODE_ENV);
 
   return {
     presets: [
@@ -29,18 +10,21 @@ module.exports = api => {
         "@babel/preset-env",
         {
           targets: {
-            node: "current"
-          }
-        }
-      ]
+            node: "current",
+          },
+        },
+      ],
     ],
     plugins: [
       [
         "module-resolver",
         {
-          alias
-        }
-      ]
-    ]
+          alias: aliasDirs({
+            paths: ["."],
+            ignoreDirectories: ignoreDirectories.filter((f) => f !== "env"),
+          }),
+        },
+      ],
+    ],
   };
 };
