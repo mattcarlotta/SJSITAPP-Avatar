@@ -16,14 +16,14 @@ import { unableToLocateUser, unableToLocateFile } from "~utils/errors";
 const deleteUserAvatar = async (req, res) => {
   try {
     const { id: _id } = req.params;
+    if (!_id) throw String(unableToLocateUser);
 
-    const exisitingUser = await User.findOne({ _id });
-    if (!exisitingUser) throw String(unableToLocateUser);
+    const existingUser = await User.findOne({ _id });
+    if (!existingUser) throw String(unableToLocateUser);
 
-    if (exisitingUser.avatar)
-      await fs.remove(`uploads/${exisitingUser.avatar}`);
+    if (existingUser.avatar) await fs.remove(`uploads/${existingUser.avatar}`);
 
-    await exisitingUser.updateOne({ avatar: "" });
+    await existingUser.updateOne({ avatar: "" });
 
     res
       .status(200)
@@ -46,6 +46,8 @@ const deleteUserAvatar = async (req, res) => {
 const updateUserAvatar = async (req, res) => {
   try {
     const { id: _id } = req.params;
+    if (!_id) throw String(unableToLocateUser);
+
     const { avatar } = req.file;
     if (!avatar) throw String(unableToLocateFile);
 

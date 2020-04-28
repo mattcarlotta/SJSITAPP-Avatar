@@ -8,23 +8,19 @@ const currentDirectory = process.cwd();
 
 export default async (req, res, next) => {
   try {
-    if (req.err || !req.file) throw String(req.error || unableToProcessFile);
+    if (req.err || !req.file) throw String(req.err || unableToProcessFile);
 
     const filename = `${uuid()}.png`;
     const filepath = `uploads/${filename}`;
 
-    await new Promise((resolve, reject) =>
-      mkdir(`${currentDirectory}/uploads`, err => {
-        !err ? resolve() : reject(err);
-      })
-    );
+    await mkdir(`${currentDirectory}/uploads`);
 
     await sharp(req.file.buffer)
       .resize({
         width: 256,
         height: 256,
         fit: "cover",
-        withoutEnlargement: true
+        withoutEnlargement: true,
       })
       .toFile(filepath);
 

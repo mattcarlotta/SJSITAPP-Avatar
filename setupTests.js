@@ -1,7 +1,7 @@
-import { connectDatabase } from "database";
+import { createConnection } from "~database";
 import { Types } from "mongoose";
 
-jest.mock("fs");
+jest.mock("fs-extra");
 
 expect.extend({
   toBeNullOrType: (received, type) => ({
@@ -10,12 +10,14 @@ expect.extend({
   }),
 });
 
-const mockRequest = (user, session, body, query, params) => ({
+const mockRequest = (user, session, body, query, params, file, err) => ({
   user,
   session,
   body,
   query,
   params,
+  file,
+  err,
 });
 
 const mockResponse = () => {
@@ -30,6 +32,6 @@ const mockResponse = () => {
 export { mockRequest, mockResponse };
 
 global.ObjectId = Types.ObjectId;
-global.connectDatabase = connectDatabase;
+global.createConnection = createConnection;
 global.mockRequest = mockRequest;
 global.mockResponse = mockResponse;

@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import bluebird from "bluebird";
 import mongoose from "mongoose";
 import chalk from "chalk";
@@ -12,13 +13,15 @@ const options = {
   useUnifiedTopology: true, // avoids DeprecationWarning: current Server Discovery and Monitoring engine is deprecated
 };
 
-module.exports.connectDatabase = () =>
+export const createConnection = () =>
   mongoose.createConnection(`mongodb://localhost/${DATABASE}`, options);
 
 //= ===========================================================//
 //* MONGO DB CONFIG */
 //= ===========================================================//
-mongoose.connect(`mongodb://localhost/${DATABASE}`, options); // connect to our mongodb database
+(async () => {
+  await mongoose.connect(`mongodb://localhost/${DATABASE}`, options); // connect to our mongodb database
+})();
 
 mongoose.Promise = bluebird; // bluebird for mongoose promises
 

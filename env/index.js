@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const { statSync } = require("fs");
 const { resolve } = require("path");
 
-const { DATABASE, NODE_ENV } = process.env;
+const { DATABASE, NODE_ENV, inTesting } = process.env;
 const path = `env/.env.${NODE_ENV}`;
 
 try {
@@ -13,11 +13,12 @@ try {
       path,
     });
 
-    console.log(
-      `\n${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" INFO ")} ${chalk.blue(
-        `Using ${NODE_ENV} environment variables.`
-      )}`
-    );
+    if (!inTesting)
+      console.log(
+        `\n${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" INFO ")} ${chalk.blue(
+          `Using ${NODE_ENV} environment variables.`
+        )}`
+      );
   }
 } catch (error) {
   if (!DATABASE && (NODE_ENV !== "production" || NODE_ENV !== "staging")) {
