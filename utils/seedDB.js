@@ -100,7 +100,7 @@ const globalSetup = async () => {
       )}\n`
     );
 
-    return SEEDDB ? resolve(process.exit(0)) : true;
+    return SEEDDB ? process.exit(0) : true;
   } catch (err) {
     console.log(
       `\n\x1b[7m\x1b[31;1m FAIL \x1b[0m \x1b[2mutils/\x1b[0m\x1b[31;1mseedDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m`
