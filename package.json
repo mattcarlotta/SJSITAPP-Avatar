@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "node": ">=8",
+    "node": ">=10",
     "npm": ">=3"
   },
   "scripts": {
@@ -22,13 +22,6 @@
     "dev": "NODE_ENV=development nodemon --exec babel-node ./app.js",
     "stage": "NODE_ENV=staging nodemon --exec babel-node ./app.js",
     "lint": "lint-staged"
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "NODE_ENV=test jest --config ./jest.json --findRelatedTests",
-      "git add"
-    ]
   },
   "nodemonConfig": {
     "ignore": [
@@ -68,16 +61,9 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-import-resolver-babel-module": "^5.0.1",
     "eslint-plugin-import": "^2.14.0",
-    "husky": "^4.0.10",
     "jest": "^24.5.0",
-    "lint-staged": "^10.0.1",
     "nodemon": "^2.0.2",
     "prettier": "^1.14.3",
     "rimraf": "^3.0.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
   }
 }

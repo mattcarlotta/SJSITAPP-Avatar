@@ -9,7 +9,7 @@ const options = {
   useNewUrlParser: true, // avoids DeprecationWarning: current URL string parser is deprecated
   useCreateIndex: true, // avoids DeprecationWarning: collection.ensureIndex is deprecated.
   useFindAndModify: false, // avoids DeprecationWarning: collection.findAndModify is deprecated.
-  useUnifiedTopology: true // avoids DeprecationWarning: current Server Discovery and Monitoring engine is deprecated
+  useUnifiedTopology: true, // avoids DeprecationWarning: current Server Discovery and Monitoring engine is deprecated
 };
 
 module.exports.connectDatabase = () =>
@@ -27,8 +27,8 @@ if (!inTesting) {
     "connected",
     () =>
       log(
-        `${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" I ")} ${chalk.blue(
-          `Connected to ${DATABASE}`
+        `${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" INFO ")} ${chalk.blue(
+          `Connected to ${DATABASE}\n`
         )}\n`
       ) // log mongodb connection established
   );
@@ -37,11 +37,11 @@ if (!inTesting) {
     "disconnected",
     () =>
       log(
-        `\n${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" I ")} ${chalk.rgb(
+        `\n${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" INFO ")} ${chalk.rgb(
           34,
           155,
           127
-        )(`Disconnected from ${DATABASE}`)}`
+        )(`Disconnected from ${DATABASE}`)}\n`
       ) // log mongodb connection disconnected
   );
 
@@ -49,18 +49,18 @@ if (!inTesting) {
     "error",
     () =>
       log(
-        `\n${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" I ")} ${chalk.red(
+        `\n${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" ERROR ")} ${chalk.red(
           `Connection error to ${DATABASE}`
-        )}`
+        )}\n`
       ) // log mongodb connection error
   );
 
   process.on("SIGINT", () => {
     mongoose.connection.close(() => {
       log(
-        `${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" I ")} ${chalk.magenta(
+        `${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" INFO ")} ${chalk.magenta(
           `Connection was manually terminated from ${DATABASE}`
-        )}`
+        )}\n`
       );
       process.exit(0);
     });
