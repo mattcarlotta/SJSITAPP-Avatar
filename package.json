@@ -13,7 +13,7 @@
   },
   "scripts": {
     "checkbuild": "npm run checkbuild --prefix client",
-    "compile": "rimraf build && babel ./ -d build --no-comments --ignore node_modules,client,**/__tests__,coverage,setupTests.js,**/__mocks__",
+    "compile": "rimraf build && babel ./ -d build --no-comments --ignore node_modules,client,**/__tests__,coverage,setupTests.js,babel.config.js,**/__mocks__",
     "lintjs": "eslint -c ./.eslintrc --ignore-path ./.eslintignore ./ --ext .js,.jsx",
     "test": "NODE_ENV=test WATCHING=true jest --config ./jest.json --watchAll",
     "start": "NODE_ENV=production node ./build/app.js",
