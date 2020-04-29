@@ -32,7 +32,6 @@ export default (app) => {
       keys: [cookieKey],
       httpOnly: true,
       secure: inProd,
-      sameSite: inProd ? "Lax" : "None",
     })
   );
 
