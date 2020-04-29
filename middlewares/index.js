@@ -16,7 +16,7 @@ const logging = inProd
 //= ===========================================================//
 /* APP MIDDLEWARE */
 //= ===========================================================//
-export default app => {
+export default (app) => {
   morgan.token("date", () => moment().format("MMMM Do YYYY, h:mm:ss a"));
 
   app.set("json spaces", 2); // sets JSON spaces for clarity
@@ -32,7 +32,7 @@ export default app => {
       keys: [cookieKey],
       httpOnly: true,
       secure: inProd,
-      sameSite: inProd
+      sameSite: inProd ? "Lax" : "None",
     })
   );
 
@@ -45,7 +45,7 @@ export default app => {
       limits: {
         fileSize: 10240000,
         files: 1,
-        fields: 1
+        fields: 1,
       },
       fileFilter: (req, file, next) => {
         if (!/\.(jpe?g|png)$/i.test(file.originalname)) {
@@ -53,7 +53,7 @@ export default app => {
           next(null, false);
         }
         next(null, true);
-      }
+      },
     }).single("file")
   );
 
