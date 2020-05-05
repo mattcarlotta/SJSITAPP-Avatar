@@ -51,3 +51,6 @@ npm-debug.log
 
 # production env
 prod.json
+
+# codecov token
+.cc_token
