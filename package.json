@@ -1,6 +1,6 @@
 {
   "name": "sjsitapp-image-service",
-  "version": "0.0.1",
+  "version": "0.0.11",
   "main": "app.js",
   "description": "An application for the San Jose Sharks Ice Team.",
   "repository": "https://github.com/mattcarlotta/SJSITApp-Image",
@@ -12,8 +12,8 @@
     "npm": ">=3"
   },
   "scripts": {
+    "build": "rimraf build && babel ./ -d build --no-comments --ignore node_modules,client,**/__tests__,coverage,setupTests.js,babel.config.js,**/__mocks__",
     "checkbuild": "npm run checkbuild --prefix client",
-    "compile": "rimraf build && babel ./ -d build --no-comments --ignore node_modules,client,**/__tests__,coverage,setupTests.js,babel.config.js,**/__mocks__",
     "lintjs": "eslint -c ./.eslintrc --ignore-path ./.eslintignore ./ --ext .js,.jsx",
     "start": "NODE_ENV=production node ./build/app.js",
     "seed:test": "NODE_ENV=test SEEDDB=true babel-node ./utils/seedDB.js",

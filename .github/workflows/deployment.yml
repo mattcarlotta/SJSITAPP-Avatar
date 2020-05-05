@@ -1,0 +1,86 @@
+name: Deployment
+
+"on":
+  push:
+    branches:
+      - master
+
+env:
+  REMOTE: ${{secrets.USERNAME}}@${{secrets.HOST}}
+
+jobs:
+  deploy:
+    if: "!contains(github.event.commits[0].message, '[skip-ci]')"
+    runs-on: ubuntu-18.04
+
+    services:
+      mongodb:
+        image: mongo:3.6.3
+        ports:
+          - 27017:27017
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+
+      - name: Yarn Cache Directory
+        id: yarn-cache-dir-path
+        run: echo '::set-output name=dir::$(yarn cache dir)'
+
+      - name: Utilize Yarn Cache Directory
+        uses: actions/cache@v1
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn install
+
+      - name: Run Tests
+        id: tests
+        run: yarn test
+        env:
+          cookieKey: eat-me-pfftt
+          DATABASE: iceteam-test-database
+          inTesting: true
+          PORT: 5000
+
+      - name: Create Local Build
+        if: steps.tests.exit_code == 0
+        id: build
+        run: yarn build
+        env:
+          API: ${{ secrets.API }}
+          CLIENT: ${{ secrets.CLIENT }}
+          cookieKey: ${{ secrets.cookieKey }}
+          DATABASE: ${{ secrets.DATABASE }}
+          PORT: ${{ secrets.PORT }}
+
+      - name: Deploy Build
+        run: |
+          echo '${{secrets.DEPLOYKEY}}' > deploy_key
+          chmod 600 ./deploy_key
+          rsync -chav --delete --exclude prod.json --exclude /env/ --exclude='$(yarn cache dir)' --exclude /images/ --exclude /uploads/ \
+            -e 'ssh -i ./deploy_key -o StrictHostKeyChecking=no' \
+            --exclude /deploy_key \
+            --exclude /.git/ \
+            --exclude /.github/ \
+            --exclude /node_modules/ \
+            --exclude /prod.json/ \
+            --exclude /env/ \
+            --exclude '$(yarn cache dir)' \
+            --exclude /images/ \
+            --exclude /uploads/ \
+            ./ ${{env.REMOTE}}:${{secrets.DESTINATION}}
+
+      - name: Restart Application
+        run: ssh -i ./deploy_key -o 'StrictHostKeyChecking no' -v ${{env.REMOTE}} 'pm2 restart 2'
