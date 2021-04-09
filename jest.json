@@ -2,30 +2,35 @@
   "testEnvironment": "node",
   "verbose": false,
   "clearMocks": true,
-  "modulePaths": ["<rootDir>", "node_modules"],
   "moduleNameMapper": {
-    "~controllers": "<rootDir>controllers",
-    "~database": "<rootDir>database",
-    "~logger": "<rootDir>/logger",
-    "~middlewares": "<rootDir>middlewares",
-    "~models": "<rootDir>models",
-    "~routes": "<rootDir>routes/index",
-    "~services/(.*)$": "<rootDir>services/$1",
-    "~utils/(.*)$": "<rootDir>utils/$1"
+    "~controllers": "<rootDir>/controllers",
+    "~database/(.*)$": "<rootDir>/database/$1",
+    "~database": "<rootDir>/database",
+    "~helpers/(.*)$": "<rootDir>/helpers/$1",
+    "~helpers": "<rootDir>/helpers",
+    "~logger": "<rootDir/>logger",
+    "~middlewares": "<rootDir>/middlewares",
+    "~models": "<rootDir>/models",
+    "~routes": "<rootDir>/routes",
+    "~strategies": "<rootDir>/strategies",
+    "~utils/(.*)$": "<rootDir>/utils/$1"
   },
   "transform": {
     "^.+\\.ts?$": "ts-jest"
   },
   "moduleFileExtensions": ["ts", "js", "json"],
-  "testMatch": ["**/*.spec.ts"],
   "transformIgnorePatterns": ["^.+\\.js$"],
-  "collectCoverageFrom": ["**/*.ts"],
+  "collectCoverageFrom": ["**/*.ts", "!**/*d.ts"],
   "coveragePathIgnorePatterns": [
+    "<rootDir>/@types",
+    "<rootDir>/build",
     "<rootDir>/database",
+    "<rootDir>/logger",
     "<rootDir>/middlewares",
-    "<rootDir>/node_modules"
+    "<rootDir>/node_modules",
+    "<rootDir>/index.ts"
   ],
-  "globalSetup": "<rootDir>database/seedDB/index.ts",
-  "globalTeardown": "<rootDir>database/teardownDB/index.ts",
-  "setupFilesAfterEnv": ["<rootDir>/utils/setupTests/index.ts"]
+  "globalSetup": "<rootDir>/database/seedDB/index.ts",
+  "globalTeardown": "<rootDir>/database/teardownDB/index.ts",
+  "setupFilesAfterEnv": ["<rootDir>/utils/setupTests.ts"]
 }

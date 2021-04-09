@@ -39,7 +39,11 @@ const middlewares = (app: Express): void => {
 
   app.use("/images/*", (_req, _res, next) => next(), cors());
   app.use("/uploads/*", (_req, _res, next) => next(), cors({ origin: CLIENT }));
-  app.use("/api/avatar/*", (_req, _res, next) => next(), cors({ credentials: true, origin: CLIENT }));
+  app.use(
+    "/api/avatar/*",
+    (_req, _res, next) => next(),
+    cors({ credentials: true, origin: CLIENT })
+  );
 
   app.use(
     multer({

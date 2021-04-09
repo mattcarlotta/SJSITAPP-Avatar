@@ -12,10 +12,10 @@
     "npm": ">=3"
   },
   "scripts": {
-    "build": "rimraf build && tsc",
-    "lintjs": "eslint -c ./.eslintrc --ignore-path ./.eslintignore ./ --ext .ts",
+    "build": "rimraf build && tsc --p ./tsconfig.prod.json",
+    "lint": "eslint -c ./.eslintrc --ignore-path ./.eslintignore ./ --ext .ts",
     "start": "ENV_DEBUG=true ENV_LOAD=.env.prod node -r ./prod-paths.js -r snackables build/index.js",
-    "drop": "ENV_DEBUG=true ENV_LOAD=.env.teardown,.env.test ts-node --project ./api/tsconfig.json -r tsconfig-paths/register ./database/teardownDB/index.ts",
+    "drop": "ENV_DEBUG=true ENV_LOAD=.env.teardown,.env.test ts-node --project ./tsconfig.json -r tsconfig-paths/register ./database/teardownDB/index.ts",
     "seed": "ENV_DEBUG=true ENV_LOAD=.env.seed,.env.test ts-node --project ./tsconfig.json -r tsconfig-paths/register ./database/seedDB/index.ts",
     "dev": "nodemon --config ./nodemon.json",
     "stage": "NODE_ENV=staging nodemon --exec babel-node ./app.js",
@@ -63,6 +63,7 @@
     "@types/sharp": "^0.28.0",
     "@types/supertest": "^2.0.11",
     "@types/uuid": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.21.0",
     "@typescript-eslint/parser": "^4.21.0",
     "alias-dirs": "^0.0.11",
     "eslint": "^7.23.0",

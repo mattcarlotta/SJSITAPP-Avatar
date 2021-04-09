@@ -1,32 +1,37 @@
 // import fs from "fs-extra";
+import type { Response } from "express";
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
-import { memberSignIn } from "~utils/signIn";
 // import app from "~utils/testServer";
-// import { deleteUserAvatar } from "~controllers";
-// import { unableToLocateUser } from "~utils/errors";
-// import User from "~models/user";
+import { deleteUserAvatar } from "~controllers";
+import { unableToLocateUser } from "~helpers/errors";
+// import User from "~models";
+import { mockResponse, mockRequest } from "~utils/mockExpress";
 
 describe("Delete Avatar", () => {
-  let cookie: string;
   beforeAll(async () => {
     await connectToDB();
-    cookie = await memberSignIn();
+  });
+
+  let res: Response;
+  beforeEach(() => {
+    res = mockResponse();
   });
 
   afterAll(async () => {
     await mongoose.connection.close();
   });
 
-  // it("handles empty params requests", async () => {
-  //   const id = "";
-  //   const req = mockRequest(null, null, null, null, { id });
-  //   await deleteUserAvatar(req, res);
-  //   expect(res.status).toHaveBeenCalledWith(400);
-  //   expect(res.json).toHaveBeenCalledWith({
-  //     err: unableToLocateUser,
-  //   });
-  // });
+  it("handles empty params requests", async () => {
+    await deleteUserAvatar(
+      mockRequest(undefined, undefined, undefined, { id: "" }),
+      res
+    );
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({
+      err: unableToLocateUser
+    });
+  });
 
   // it("handles invalid user delete avatar requests", async () => {
   //   const req = mockRequest(null, null, null, null, {

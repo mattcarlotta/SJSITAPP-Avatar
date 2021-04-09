@@ -14,7 +14,7 @@ const { DATABASE, EXIT, SEED } = process.env;
  * @returns {string} - displays a:  PASS  utils/seedDB.js message to console.
  * @throws {error} - displays a:  FAIL  utils/seedDB.js message to console with the error.
  */
- const seedDB = async (): Promise<any> => {
+const seedDB = async (): Promise<any> => {
   try {
     await connectToDB();
     const db = await createConnectionToDatabase();
@@ -22,75 +22,64 @@ const { DATABASE, EXIT, SEED } = process.env;
     const databaseExists = User.findOne({ email: "bob.dole@example.com" });
     if (databaseExists) await db.dropDatabase();
 
-    const testUser1 = {
-      avatar: "",
-      email: "bob.dole@example.com",
-      password: "password",
-      firstName: "Bob",
-      lastName: "Dole",
-      role: "employee",
-      token: uuid(),
-      emailReminders: true,
-      registered: new Date(),
-    };
+    const password = "password";
+    const registered = new Date();
 
-    const testUser2 = {
+    const staffMember = {
       avatar: "",
-      email: "jane.doe@example.com",
-      password: "password",
-      firstName: "Jane",
-      lastName: "Doe",
+      email: "staffmember@example.com",
+      password,
+      firstName: "Staff",
+      lastName: "Member",
       role: "staff",
       token: uuid(),
       emailReminders: true,
-      registered: new Date(),
+      registered
     };
 
-    const testUser3 = {
-      avatar: "1.png",
-      email: "annie.dole@example.com",
-      password: "password",
-      firstName: "Annie",
-      lastName: "Dole",
-      role: "employee",
-      token: uuid(),
-      emailReminders: true,
-      registered: new Date(),
-    };
-
-    const testUser4 = {
-      avatar: "2.png",
-      email: "chuck.doe@example.com",
-      password: "password",
-      firstName: "Chuck",
-      lastName: "Doe",
-      role: "employee",
-      token: uuid(),
-      emailReminders: true,
-      registered: new Date(),
-    };
-
-    const testUser5 = {
+    const realMember = {
       avatar: "",
-      email: "jamie.doe@example.com",
-      password: "password",
-      firstName: "Jamie",
-      lastName: "Doe",
-      role: "employee",
+      email: "carlotta.matthew@gmail.com",
+      password,
+      firstName: "Matthew",
+      lastName: "Carlotta",
+      role: "member",
       token: uuid(),
       emailReminders: true,
-      status: "suspended",
-      registered: new Date(),
+      registered
+    };
+
+    const scheduledMember = {
+      avatar: "2.png",
+      email: "scheduledmember@test.com",
+      password,
+      firstName: "Scheduled",
+      lastName: "Member",
+      role: "member",
+      token: uuid(),
+      emailReminders: true,
+      registered
+    };
+
+    const suspendedMember = {
+      avatar: "",
+      email: "suspended.employee@example.com",
+      password,
+      firstName: "Suspended",
+      lastName: "Employee",
+      role: "member",
+      token: uuid(),
+      emailReminders: true,
+      registered,
+      status: "suspended"
     };
 
     await User.insertMany([
-      testUser1,
-      testUser2,
-      testUser3,
-      testUser4,
-      testUser5,
+      staffMember,
+      realMember,
+      scheduledMember,
+      suspendedMember
     ]);
-
 
     await db.close();
 

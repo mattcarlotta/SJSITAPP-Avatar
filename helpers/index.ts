@@ -8,7 +8,8 @@ import type { Request, Response } from "express";
  * @param req - express `Request`
  * @returns string or undefined
  */
-const parseSession = (req: Request): string | undefined => get(req, ["session", "user", "id"]);
+const parseSession = (req: Request): string | undefined =>
+  get(req, ["session", "user", "id"]);
 
 /**
  * Helper function to send an error to the CLIENT.
@@ -19,7 +20,7 @@ const parseSession = (req: Request): string | undefined => get(req, ["session", 
  * @param res - res object
  * @returns Response
  */
- const sendError = (err: Error, statusCode: number, res: Response): Response =>
+const sendError = (err: Error, statusCode: number, res: Response): Response =>
   res.status(statusCode).json({ err: err.toString() });
 
 export { parseSession, sendError };

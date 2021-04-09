@@ -6,6 +6,8 @@ tsconfigpaths.register({
     "~controllers": ["controllers/index"],
     "~database/*": ["database/*"],
     "~database": ["database/index"],
+    "~helpers/*": ["helpers/*"],
+    "~helpers": ["helpers/index"],
     "~logger": ["logger/index"],
     "~middlewares": ["middlewares/index"],
     "~models": ["models/index"],

@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
 import fs from "fs-extra";
-import User from "~models";
 import mkdir from "mkdirp";
 import sharp from "sharp";
 import { v4 as uuid } from "uuid";
+import User from "~models";
 import { sendError } from "~helpers";
 import { unableToLocateUser, unableToProcessFile } from "~helpers/errors";
 
@@ -15,7 +15,10 @@ import { unableToLocateUser, unableToProcessFile } from "~helpers/errors";
  * @returns {Response} message
  * @throws {ResponseError}
  */
-const deleteUserAvatar = async (req: Request, res: Response): Promise<Response> => {
+const deleteUserAvatar = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
   try {
     const { id: _id } = req.params;
     if (!_id) throw unableToLocateUser;
@@ -44,7 +47,10 @@ const deleteUserAvatar = async (req: Request, res: Response): Promise<Response> 
  * @returns {Response} message
  * @throws {ResponseError}
  */
-const updateUserAvatar = async (req: Request, res: Response): Promise<Response> => {
+const updateUserAvatar = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
   try {
     const { id: _id } = req.params;
     if (!_id) throw unableToLocateUser;

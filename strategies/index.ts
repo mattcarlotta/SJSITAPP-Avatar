@@ -9,7 +9,11 @@ import { badCredentials, invalidSession } from "~helpers/errors";
  * @function
  * @returns {function}
  */
-const RequireAuth = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+const RequireAuth = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
   try {
     const _id = parseSession(req);
     if (!_id) throw String(badCredentials);

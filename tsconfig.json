@@ -21,7 +21,7 @@
     "sourceMap": false,
     "strict": true,
     "target": "es6",
-    "typeRoots": ["./@types", "./node_modules/@types"],
+    "typeRoots": ["@types", "node_modules/@types"],
     "paths": {
       "~controllers": ["controllers/index"],
       "~database/*": ["database/*"],
@@ -31,12 +31,18 @@
       "~logger": ["logger/index"],
       "~middlewares": ["middlewares/index"],
       "~models": ["models/index"],
-      "~routes/*": ["routes/*"],
       "~routes": ["routes/index"],
       "~strategies": ["strategies/index"],
       "~utils/*": ["utils/*"]
     }
   },
   "include": ["**/*.ts"],
-  "exclude": [".github", "coverage", "node_modules", "uploads", "images"]
+  "exclude": [
+    ".github",
+    "build",
+    "coverage",
+    "node_modules",
+    "uploads",
+    "images"
+  ]
 }
