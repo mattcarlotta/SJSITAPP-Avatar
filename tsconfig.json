@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "diagnostics": true,
+    "declaration": true,
+    "noEmitOnError": true,
+    "allowJs": true,
+    "alwaysStrict": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es6"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "./build",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": false,
+    "strict": true,
+    "target": "es6",
+    "typeRoots": ["./@types", "./node_modules/@types"],
+    "paths": {
+      "~controllers": ["controllers/index"],
+      "~database/*": ["database/*"],
+      "~database": ["database/index"],
+      "~helpers/*": ["helpers/*"],
+      "~helpers": ["helpers/index"],
+      "~logger": ["logger/index"],
+      "~middlewares": ["middlewares/index"],
+      "~models": ["models/index"],
+      "~routes/*": ["routes/*"],
+      "~routes": ["routes/index"],
+      "~strategies": ["strategies/index"],
+      "~utils/*": ["utils/*"]
+    }
+  },
+  "include": ["**/*.ts"],
+  "exclude": [".github", "coverage", "node_modules", "uploads", "images"]
+}

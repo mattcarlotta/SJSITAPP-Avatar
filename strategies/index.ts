@@ -1,6 +1,7 @@
-import User from "~models/user";
-import { parseSession, sendError } from "~utils/helpers";
-import { badCredentials, invalidSession } from "~utils/errors";
+import type { Request, Response, NextFunction } from "express";
+import User from "~models";
+import { parseSession, sendError } from "~helpers";
+import { badCredentials, invalidSession } from "~helpers/errors";
 
 /**
  * Middleware function to check if a user is logged into a session and the session is valid.
@@ -8,7 +9,7 @@ import { badCredentials, invalidSession } from "~utils/errors";
  * @function
  * @returns {function}
  */
-export default async (req, res, next) => {
+const RequireAuth = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   try {
     const _id = parseSession(req);
     if (!_id) throw String(badCredentials);
@@ -17,10 +18,10 @@ export default async (req, res, next) => {
     if (!existingUser) throw String(badCredentials);
     if (existingUser.status !== "active") throw String(invalidSession);
 
-    req.user = existingUser;
-
-    next();
+    return next();
   } catch (err) {
     return sendError(err, 403, res);
   }
 };
+
+export default RequireAuth;

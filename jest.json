@@ -3,12 +3,29 @@
   "verbose": false,
   "clearMocks": true,
   "modulePaths": ["<rootDir>", "node_modules"],
-  "setupFilesAfterEnv": ["<rootDir>/setupTests.js"],
-  "transform": {
-    "^.+\\.(js)$": "babel-jest"
+  "moduleNameMapper": {
+    "~controllers": "<rootDir>controllers",
+    "~database": "<rootDir>database",
+    "~logger": "<rootDir>/logger",
+    "~middlewares": "<rootDir>middlewares",
+    "~models": "<rootDir>models",
+    "~routes": "<rootDir>routes/index",
+    "~services/(.*)$": "<rootDir>services/$1",
+    "~utils/(.*)$": "<rootDir>utils/$1"
   },
-  "moduleFileExtensions": ["js", "json"],
-  "testPathIgnorePatterns": ["<rootDir>/node_modules/"],
-  "globalSetup": "<rootDir>/utils/seedDB.js",
-  "globalTeardown": "<rootDir>/utils/teardownDB.js"
+  "transform": {
+    "^.+\\.ts?$": "ts-jest"
+  },
+  "moduleFileExtensions": ["ts", "js", "json"],
+  "testMatch": ["**/*.spec.ts"],
+  "transformIgnorePatterns": ["^.+\\.js$"],
+  "collectCoverageFrom": ["**/*.ts"],
+  "coveragePathIgnorePatterns": [
+    "<rootDir>/database",
+    "<rootDir>/middlewares",
+    "<rootDir>/node_modules"
+  ],
+  "globalSetup": "<rootDir>database/seedDB/index.ts",
+  "globalTeardown": "<rootDir>database/teardownDB/index.ts",
+  "setupFilesAfterEnv": ["<rootDir>/utils/setupTests/index.ts"]
 }

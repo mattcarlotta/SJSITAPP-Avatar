@@ -1,25 +1,24 @@
-/* eslint-disable no-console */
-import chalk from "chalk";
+import "snackables";
+import mongoose from "mongoose";
 import { v4 as uuid } from "uuid";
-import "~env";
-import { createConnection } from "~database";
-import User from "~models/user";
+import { connectToDB, createConnectionToDatabase } from "../index";
+import { logErrorMessage, logInfoMessage } from "../../logger";
+import User from "../../models";
 
-const { DATABASE, SEEDDB } = process.env;
+const { DATABASE, EXIT, SEED } = process.env;
 
 /**
  * Function to seed the testing Mongo database.
  *
  * @function
- * @async
- * @function createConnection - connects to testing Mongo database.
- * @function close - closes connection to testing Mongo database.
  * @returns {string} - displays a:  PASS  utils/seedDB.js message to console.
  * @throws {error} - displays a:  FAIL  utils/seedDB.js message to console with the error.
  */
-const globalSetup = async () => {
-  const db = await createConnection();
+ const seedDB = async (): Promise<any> => {
   try {
+    await connectToDB();
+    const db = await createConnectionToDatabase();
+
     const databaseExists = User.findOne({ email: "bob.dole@example.com" });
     if (databaseExists) await db.dropDatabase();
 
@@ -92,25 +91,28 @@ const globalSetup = async () => {
       testUser5,
     ]);
 
+
     await db.close();
 
-    console.log(
-      `\n${chalk.rgb(7, 54, 66).bgRgb(38, 139, 210)(" SEED ")} ${chalk.blue(
-        `\x1b[2mutils/\x1b[0m\x1b[1mseedDB.js\x1b[0m (${DATABASE})`
-      )}\n`
+    logInfoMessage(
+      `\x1b[2mutils/\x1b[0m\x1b[1mseedDB.js\x1b[0m (${DATABASE})\n`
     );
 
-    return SEEDDB ? process.exit(0) : true;
+    await mongoose.connection.close();
+
+    if (EXIT) process.exit(0);
+
+    return null;
   } catch (err) {
-    console.log(
-      `\n\x1b[7m\x1b[31;1m FAIL \x1b[0m \x1b[2mutils/\x1b[0m\x1b[31;1mseedDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m`
-    );
+    logErrorMessage(`seedDB.js\x1b[0m\x1b[31m\n${err.toString()}\x1b[0m\n`);
 
-    return SEEDDB ? process.exit(1) : false;
+    mongoose.connection.close();
+
+    process.exit(0);
   }
 };
 
-if (SEEDDB) globalSetup();
+if (SEED) seedDB();
 
-export default globalSetup;
+export default seedDB;
 /* eslint-enable no-console */
