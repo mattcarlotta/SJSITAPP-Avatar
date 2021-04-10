@@ -1,13 +1,16 @@
 import type { Response } from "express";
-// import fs from "fs-extra";
+import fs from "fs-extra";
+import mkdirp from "mkdirp";
+import sharp from "sharp";
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
 import { updateUserAvatar } from "~controllers";
-import { unableToLocateUser } from "~helpers/errors"; // unableToLocateFile
-// import User from "~models";
+import { unableToLocateUser, unableToProcessFile } from "~helpers/errors"; // unableToLocateFile
+import User from "~models";
 import { mockResponse, mockRequest } from "~utils/mockExpress";
 
-// const findUserExistingUser = email => User.findOne({ email });
+const originalname = "3.png";
+const buffer = [104, 101, 108, 108, 111, 32, 98, 117, 102, 102, 101, 114];
 
 describe("Update Avatar", () => {
   beforeAll(async () => {
@@ -17,6 +20,13 @@ describe("Update Avatar", () => {
   let res: Response;
   beforeEach(() => {
     res = mockResponse();
+  });
+
+  afterEach(() => {
+    // @ts-ignore
+    (mkdirp as jest.Mock).mockClear();
+    // @ts-ignore
+    (sharp as jest.Mock).mockClear();
   });
 
   afterAll(async () => {
@@ -34,94 +44,130 @@ describe("Update Avatar", () => {
     });
   });
 
-  // it("handles empty update avatar requests", async () => {
-  //   const id = "0123456789";
-  //   const req = mockRequest(
-  //     null,
-  //     null,
-  //     null,
-  //     null,
-  //     { id },
-  //     { file: { avatar: "" } }
-  //   );
+  it("handles missing member id delete update requests", async () => {
+    await updateUserAvatar(
+      mockRequest(
+        undefined,
+        undefined,
+        undefined,
+        {
+          id: ""
+        },
+        { originalname, buffer }
+      ),
+      res
+    );
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({
+      err: unableToLocateUser
+    });
+  });
 
-  //   await updateUserAvatar(req, res);
-  //   expect(res.status).toHaveBeenCalledWith(400);
-  //   expect(res.json).toHaveBeenCalledWith({
-  //     err: unableToLocateFile,
-  //   });
-  // });
+  it("handles invalid member id delete update requests", async () => {
+    await updateUserAvatar(
+      mockRequest(
+        undefined,
+        undefined,
+        undefined,
+        {
+          id: "5ea8496ce6e9625101b952d5"
+        },
+        { originalname, buffer }
+      ),
+      res
+    );
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({
+      err: unableToLocateUser
+    });
+  });
 
-  // it("handles invalid user delete update requests", async () => {
-  //   const req = mockRequest(
-  //     null,
-  //     null,
-  //     null,
-  //     null,
-  //     {
-  //       id: "5ea8496ce6e9625101b952d5",
-  //     },
-  //     { avatar: "1234.png" }
-  //   );
-  //   await updateUserAvatar(req, res);
-  //   expect(res.status).toHaveBeenCalledWith(400);
-  //   expect(res.json).toHaveBeenCalledWith({
-  //     err: unableToLocateUser,
-  //   });
-  // });
+  it("handles requests that fail file check middleware", async () => {
+    await updateUserAvatar(
+      mockRequest(
+        undefined,
+        undefined,
+        undefined,
+        { id: "5ea8496ce6e9625101b952d5" },
+        { originalname, buffer },
+        "That file extension is not accepted!"
+      ),
+      res
+    );
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({
+      err: "That file extension is not accepted!"
+    });
+  });
 
-  // it("handles empty user avatar requests", async () => {
-  //   const existingUser = await findUserExistingUser("jane.doe@example.com");
+  it("handles requests empty file update avatar", async () => {
+    await updateUserAvatar(
+      mockRequest(
+        undefined,
+        undefined,
+        undefined,
+        { id: "5ea8496ce6e9625101b952d5" },
+        undefined
+      ),
+      res
+    );
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({
+      err: unableToProcessFile
+    });
+  });
 
-  //   const avatar = "3.png";
+  it("handles requests where members that don't have an avatar and are trying to add one", async () => {
+    const existingUser = await User.findOne({ email: "emptyavatar@test.com" });
 
-  //   const req = mockRequest(
-  //     null,
-  //     null,
-  //     null,
-  //     null,
-  //     { id: existingUser._id },
-  //     { avatar }
-  //   );
+    await updateUserAvatar(
+      mockRequest(
+        undefined,
+        undefined,
+        undefined,
+        { id: existingUser._id },
+        { originalname, buffer }
+      ),
+      res
+    );
 
-  //   await updateUserAvatar(req, res);
+    const updatedUser = await User.findOne({ email: "emptyavatar@test.com" });
 
-  //   const updatedUser = await findUserExistingUser("jane.doe@example.com");
+    expect(mkdirp).toHaveBeenCalledTimes(1);
+    expect(sharp).toHaveBeenCalledWith(buffer);
+    expect(updatedUser.avatar).toBeDefined();
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith({
+      message: "Successfully updated your current avatar.",
+      avatar: expect.any(String)
+    });
+  });
 
-  //   expect(updatedUser.avatar).toEqual(avatar);
-  //   expect(res.status).toHaveBeenCalledWith(200);
-  //   expect(res.json).toHaveBeenCalledWith({
-  //     message: "Successfully updated your current avatar.",
-  //     avatar,
-  //   });
-  // });
+  it("handles requests where members that already have an avatar and are trying to update it", async () => {
+    const existingUser = await User.findOne({ email: "hasavatar@test.com" });
+    const currentAvatar = "2.png";
 
-  // it("handles updating previous user avatar requests", async () => {
-  //   const existingUser = await findUserExistingUser("chuck.doe@example.com");
+    expect(existingUser.avatar).toEqual(currentAvatar);
 
-  //   expect(existingUser.avatar).toEqual("2.png");
+    await updateUserAvatar(
+      mockRequest(
+        undefined,
+        undefined,
+        undefined,
+        { id: existingUser._id },
+        { originalname, buffer }
+      ),
+      res
+    );
 
-  //   const avatar = "4.png";
+    const updatedUser = await User.findOne({ email: "hasavatar@test.com" });
 
-  //   const req = mockRequest(
-  //     null,
-  //     null,
-  //     null,
-  //     null,
-  //     { id: existingUser._id },
-  //     { avatar }
-  //   );
-
-  //   await updateUserAvatar(req, res);
-
-  //   const updatedUser = await findUserExistingUser("chuck.doe@example.com");
-
-  //   expect(fs.remove).toHaveBeenCalledWith(`uploads/${existingUser.avatar}`);
-  //   expect(updatedUser.avatar).toEqual(avatar);
-  //   expect(res.status).toHaveBeenCalledWith(200);
-  //   expect(res.json).toHaveBeenCalledWith({
-  //     message: "Successfully updated your current avatar.",
-  //     avatar,
-  //   });
-  // });
+    expect(fs.remove).toHaveBeenCalledWith(`uploads/${existingUser.avatar}`);
+    expect(updatedUser.avatar).not.toEqual(currentAvatar);
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith({
+      message: "Successfully updated your current avatar.",
+      avatar: expect.any(String)
+    });
+  });
 });

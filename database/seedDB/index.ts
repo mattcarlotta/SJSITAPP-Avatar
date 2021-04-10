@@ -39,10 +39,10 @@ const seedDB = async (): Promise<any> => {
 
     const realMember = {
       avatar: "",
-      email: "carlotta.matthew@gmail.com",
+      email: "real.member@test.com",
       password,
-      firstName: "Matthew",
-      lastName: "Carlotta",
+      firstName: "Real",
+      lastName: "Member",
       role: "member",
       token: uuid(),
       emailReminders: true,
@@ -61,8 +61,44 @@ const seedDB = async (): Promise<any> => {
       registered
     };
 
-    const suspendedMember = {
+    const emptyAvatarMember = {
       avatar: "",
+      email: "emptyavatar@test.com",
+      password,
+      firstName: "Empty",
+      lastName: "Avatar",
+      role: "member",
+      token: uuid(),
+      emailReminders: true,
+      registered
+    };
+
+    const hasAvatarMember = {
+      avatar: "2.png",
+      email: "hasavatar@test.com",
+      password,
+      firstName: "Has",
+      lastName: "Avatar",
+      role: "member",
+      token: uuid(),
+      emailReminders: true,
+      registered
+    };
+
+    const signinMember = {
+      avatar: "2.png",
+      email: "signinmember@test.com",
+      password,
+      firstName: "Signin",
+      lastName: "Member",
+      role: "member",
+      token: uuid(),
+      emailReminders: true,
+      registered
+    };
+
+    const suspendedMember = {
+      avatar: "2.png",
       email: "suspended.employee@example.com",
       password,
       firstName: "Suspended",
@@ -77,7 +113,10 @@ const seedDB = async (): Promise<any> => {
     await User.insertMany([
       staffMember,
       realMember,
+      emptyAvatarMember,
+      hasAvatarMember,
       scheduledMember,
+      signinMember,
       suspendedMember
     ]);
 

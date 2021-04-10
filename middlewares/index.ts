@@ -6,7 +6,7 @@ import multer from "multer";
 import moment from "moment-timezone";
 import type { Express } from "express";
 
-const { COOKIEKEY, inStaging, CLIENT, NODE_ENV } = process.env;
+const { COOKIEKEY, inStaging, inTesting, CLIENT, NODE_ENV } = process.env;
 
 const inProduction = NODE_ENV === "production";
 
@@ -23,7 +23,7 @@ const middlewares = (app: Express): void => {
   app.set("json spaces", 2); // sets JSON spaces for clarity
   if (inProduction) app.set("trust proxy", 1);
 
-  app.use(morgan(logging));
+  if (!inTesting) app.use(morgan(logging));
 
   app.use(
     session({

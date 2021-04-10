@@ -8,7 +8,7 @@
     "~database": "<rootDir>/database",
     "~helpers/(.*)$": "<rootDir>/helpers/$1",
     "~helpers": "<rootDir>/helpers",
-    "~logger": "<rootDir/>logger",
+    "~logger": "<rootDir>/logger",
     "~middlewares": "<rootDir>/middlewares",
     "~models": "<rootDir>/models",
     "~routes": "<rootDir>/routes",

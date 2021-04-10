@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+import { isValidObjectId } from "mongoose";
 import fs from "fs-extra";
 import mkdir from "mkdirp";
 import sharp from "sharp";
@@ -21,7 +22,7 @@ const deleteUserAvatar = async (
 ): Promise<Response> => {
   try {
     const { id: _id } = req.params;
-    if (!_id) throw unableToLocateUser;
+    if (!isValidObjectId(_id)) throw unableToLocateUser;
 
     const existingUser = await User.findOne({ _id });
     if (!existingUser) throw unableToLocateUser;
@@ -53,8 +54,11 @@ const updateUserAvatar = async (
 ): Promise<Response> => {
   try {
     const { id: _id } = req.params;
-    if (!_id) throw unableToLocateUser;
+    if (!isValidObjectId(_id)) throw unableToLocateUser;
     if (req.err || !req.file) throw String(req.err || unableToProcessFile);
+
+    const exisitingUser = await User.findOne({ _id });
+    if (!exisitingUser) throw unableToLocateUser;
 
     const avatar = `${uuid()}.png`;
     const filepath = `uploads/${avatar}`;
@@ -69,9 +73,6 @@ const updateUserAvatar = async (
         withoutEnlargement: true
       })
       .toFile(filepath);
-
-    const exisitingUser = await User.findOne({ _id });
-    if (!exisitingUser) throw unableToLocateUser;
 
     if (exisitingUser.avatar)
       await fs.remove(`uploads/${exisitingUser.avatar}`);
