@@ -26,7 +26,10 @@ const RequireAuth = async (
     if (!existingUser) throw badCredentials;
     if (existingUser.status !== "active") throw invalidSession;
 
-    if (req.params.id !== _id && existingUser.role === "member")
+    if (
+      req.params.id !== existingUser._id.toString() &&
+      existingUser.role === "member"
+    )
       throw invalidPermissions;
 
     return next();
