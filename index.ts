@@ -17,6 +17,7 @@ const { CLIENT, PORT } = process.env;
     server.use("/api", routes);
     server.use("/uploads", express.static("uploads"));
     server.use("/images", express.static("images"));
+    server.use("/favicon.ico", express.static("images/favicon.ico"));
 
     server.listen(PORT, (err?: Error) => {
       if (err) throw err;
