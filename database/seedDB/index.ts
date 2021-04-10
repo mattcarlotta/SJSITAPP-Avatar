@@ -19,7 +19,7 @@ const seedDB = async (): Promise<any> => {
     await connectToDB();
     const db = await createConnectionToDatabase();
 
-    const databaseExists = User.findOne({ email: "bob.dole@example.com" });
+    const databaseExists = User.findOne({ email: "staffmember@test.com" });
     if (databaseExists) await db.dropDatabase();
 
     const password = "password";
@@ -27,7 +27,7 @@ const seedDB = async (): Promise<any> => {
 
     const staffMember = {
       avatar: "",
-      email: "staffmember@example.com",
+      email: "staffmember@test.com",
       password,
       firstName: "Staff",
       lastName: "Member",
@@ -99,7 +99,7 @@ const seedDB = async (): Promise<any> => {
 
     const suspendedMember = {
       avatar: "2.png",
-      email: "suspended.employee@example.com",
+      email: "suspended.employee@test.com",
       password,
       firstName: "Suspended",
       lastName: "Employee",

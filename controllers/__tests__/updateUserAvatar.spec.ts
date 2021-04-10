@@ -34,10 +34,7 @@ describe("Update Avatar", () => {
   });
 
   it("handles empty params requests", async () => {
-    await updateUserAvatar(
-      mockRequest(undefined, undefined, undefined, { id: "" }),
-      res
-    );
+    await updateUserAvatar(mockRequest(undefined, { id: "" }), res);
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.json).toHaveBeenCalledWith({
       err: unableToLocateUser
@@ -47,8 +44,6 @@ describe("Update Avatar", () => {
   it("handles missing member id delete update requests", async () => {
     await updateUserAvatar(
       mockRequest(
-        undefined,
-        undefined,
         undefined,
         {
           id: ""
@@ -67,8 +62,6 @@ describe("Update Avatar", () => {
     await updateUserAvatar(
       mockRequest(
         undefined,
-        undefined,
-        undefined,
         {
           id: "5ea8496ce6e9625101b952d5"
         },
@@ -86,8 +79,6 @@ describe("Update Avatar", () => {
     await updateUserAvatar(
       mockRequest(
         undefined,
-        undefined,
-        undefined,
         { id: "5ea8496ce6e9625101b952d5" },
         { originalname, buffer },
         "That file extension is not accepted!"
@@ -102,13 +93,7 @@ describe("Update Avatar", () => {
 
   it("handles requests empty file update avatar", async () => {
     await updateUserAvatar(
-      mockRequest(
-        undefined,
-        undefined,
-        undefined,
-        { id: "5ea8496ce6e9625101b952d5" },
-        undefined
-      ),
+      mockRequest(undefined, { id: "5ea8496ce6e9625101b952d5" }, undefined),
       res
     );
     expect(res.status).toHaveBeenCalledWith(400);
@@ -122,8 +107,6 @@ describe("Update Avatar", () => {
 
     await updateUserAvatar(
       mockRequest(
-        undefined,
-        undefined,
         undefined,
         { id: existingUser._id },
         { originalname, buffer }
@@ -151,8 +134,6 @@ describe("Update Avatar", () => {
 
     await updateUserAvatar(
       mockRequest(
-        undefined,
-        undefined,
         undefined,
         { id: existingUser._id },
         { originalname, buffer }

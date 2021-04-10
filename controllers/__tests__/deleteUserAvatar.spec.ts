@@ -22,10 +22,7 @@ describe("Delete Avatar", () => {
   });
 
   it("handles empty params requests", async () => {
-    await deleteUserAvatar(
-      mockRequest(undefined, undefined, undefined, { id: "" }),
-      res
-    );
+    await deleteUserAvatar(mockRequest(undefined, { id: "" }), res);
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.json).toHaveBeenCalledWith({
       err: unableToLocateUser
@@ -34,7 +31,7 @@ describe("Delete Avatar", () => {
 
   it("handles invalid user delete avatar requests", async () => {
     await deleteUserAvatar(
-      mockRequest(undefined, undefined, undefined, {
+      mockRequest(undefined, {
         id: "5ea8496ce6e9625101b952d5"
       }),
       res
@@ -51,7 +48,7 @@ describe("Delete Avatar", () => {
     });
 
     await deleteUserAvatar(
-      mockRequest(undefined, undefined, undefined, {
+      mockRequest(undefined, {
         id: existingUser._id
       }),
       res
@@ -68,7 +65,7 @@ describe("Delete Avatar", () => {
     });
 
     await deleteUserAvatar(
-      mockRequest(undefined, undefined, undefined, { id: existingUser._id }),
+      mockRequest(undefined, { id: existingUser._id }),
       res
     );
 
