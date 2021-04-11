@@ -6,7 +6,7 @@ import multer from "multer";
 import moment from "moment-timezone";
 import type { Express } from "express";
 
-const { COOKIEKEY, inStaging, inTesting, CLIENT, NODE_ENV } = process.env;
+const { COOKIEKEY, inTesting, CLIENT, NODE_ENV } = process.env;
 
 const inProduction = NODE_ENV === "production";
 
@@ -32,8 +32,8 @@ const middlewares = (app: Express): void => {
       name: "SJSITApp",
       maxAge: 2592000000,
       httpOnly: true,
-      secure: inProduction && !inStaging,
-      sameSite: inProduction && !inStaging
+      secure: inProduction,
+      sameSite: inProduction
     })
   );
 
