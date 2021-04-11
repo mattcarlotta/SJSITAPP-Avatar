@@ -29,7 +29,7 @@ const middlewares = (app: Express): void => {
     session({
       path: "/",
       keys: [COOKIEKEY as string],
-      name: "sjsitapp",
+      name: "SJSITApp",
       maxAge: 2592000000,
       httpOnly: true,
       secure: inProduction && !inStaging,
@@ -37,6 +37,7 @@ const middlewares = (app: Express): void => {
     })
   );
 
+  app.use("/assets/*", (_req, _res, next) => next(), cors());
   app.use("/images/*", (_req, _res, next) => next(), cors());
   app.use("/uploads/*", (_req, _res, next) => next(), cors({ origin: CLIENT }));
   app.use(

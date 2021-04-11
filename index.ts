@@ -15,6 +15,7 @@ const { CLIENT, PORT } = process.env;
     middlewares(server);
 
     server.use("/api", routes);
+    server.use("/assets", express.static("assets"));
     server.use("/uploads", express.static("uploads"));
     server.use("/images", express.static("images"));
     server.use("/favicon.ico", express.static("images/favicon.ico"));

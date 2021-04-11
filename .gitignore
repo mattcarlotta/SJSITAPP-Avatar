@@ -9,6 +9,7 @@
 build
 
 #Server files and folders
+assets/
 uploads/
 images/
 scrap/

@@ -49,7 +49,7 @@ jobs:
         id: tests
         run: yarn test
         env:
-          cookieKey: eat-me-pfftt
+          COOKIEKEY: eat-me-pfftt
           DATABASE: iceteam-test-database
           inTesting: true
           PORT: 5000
@@ -59,9 +59,8 @@ jobs:
         id: build
         run: yarn build
         env:
-          API: ${{ secrets.API }}
           CLIENT: ${{ secrets.CLIENT }}
-          cookieKey: ${{ secrets.cookieKey }}
+          COOKIEKEY: ${{ secrets.COOKIEKEY }}
           DATABASE: ${{ secrets.DATABASE }}
           PORT: ${{ secrets.PORT }}
 
@@ -69,7 +68,7 @@ jobs:
         run: |
           echo '${{secrets.DEPLOYKEY}}' > deploy_key
           chmod 600 ./deploy_key
-          rsync -chav --delete --exclude prod.json --exclude .env.prod --exclude='$(yarn cache dir)' --exclude /images/ --exclude /uploads/ \
+          rsync -chav --delete --exclude prod.json --exclude .env.prod --exclude='$(yarn cache dir)' --exclude /assets/ --exclude /images/ --exclude /uploads/ \
             -e 'ssh -i ./deploy_key -o StrictHostKeyChecking=no' \
             --exclude /deploy_key \
             --exclude /.git/ \
@@ -77,6 +76,7 @@ jobs:
             --exclude /node_modules/ \
             --exclude /prod.json/ \
             --exclude '$(yarn cache dir)' \
+            --exclude /assets/ \
             --exclude /images/ \
             --exclude /uploads/ \
             ./ ${{env.REMOTE}}:${{secrets.DESTINATION}}
