@@ -63,7 +63,7 @@ jobs:
           COOKIEKEY: ${{ secrets.COOKIEKEY }}
           DATABASE: ${{ secrets.DATABASE }}
           PORT: ${{ secrets.PORT }}
-          NODE_ENV: production
+          NODE_ENV: ${{ secrets.NODE_ENV }}
 
       - name: Deploy Build
         run: |
