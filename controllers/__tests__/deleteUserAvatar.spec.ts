@@ -7,6 +7,8 @@ import { unableToLocateUser } from "~helpers/errors";
 import User from "~models";
 import { mockResponse, mockRequest } from "~utils/mockExpress";
 
+jest.mock("fs-extra");
+
 describe("Delete Avatar", () => {
   beforeAll(async () => {
     await connectToDB();

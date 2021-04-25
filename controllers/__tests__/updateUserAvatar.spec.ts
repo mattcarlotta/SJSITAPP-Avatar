@@ -1,13 +1,14 @@
 import type { Response } from "express";
 import fs from "fs-extra";
-import mkdirp from "mkdirp";
 import sharp from "sharp";
 import mongoose from "mongoose";
 import { connectToDB } from "~database";
 import { updateUserAvatar } from "~controllers";
-import { unableToLocateUser, unableToProcessFile } from "~helpers/errors"; // unableToLocateFile
+import { unableToLocateUser, unableToProcessFile } from "~helpers/errors";
 import User from "~models";
 import { mockResponse, mockRequest } from "~utils/mockExpress";
+
+jest.mock("fs-extra");
 
 const originalname = "3.png";
 const buffer = [104, 101, 108, 108, 111, 32, 98, 117, 102, 102, 101, 114];
@@ -23,8 +24,6 @@ describe("Update Avatar", () => {
   });
 
   afterEach(() => {
-    // @ts-ignore
-    (mkdirp as jest.Mock).mockClear();
     // @ts-ignore
     (sharp as jest.Mock).mockClear();
   });
@@ -116,7 +115,7 @@ describe("Update Avatar", () => {
 
     const updatedUser = await User.findOne({ email: "emptyavatar@test.com" });
 
-    expect(mkdirp).toHaveBeenCalledTimes(1);
+    expect(fs.ensureDir).toHaveBeenCalledWith("uploads");
     expect(sharp).toHaveBeenCalledWith(buffer);
     expect(updatedUser.avatar).toBeDefined();
     expect(res.status).toHaveBeenCalledWith(200);
@@ -143,6 +142,7 @@ describe("Update Avatar", () => {
 
     const updatedUser = await User.findOne({ email: "hasavatar@test.com" });
 
+    expect(fs.ensureDir).toHaveBeenCalledWith("uploads");
     expect(fs.remove).toHaveBeenCalledWith(`uploads/${existingUser.avatar}`);
     expect(updatedUser.avatar).not.toEqual(currentAvatar);
     expect(res.status).toHaveBeenCalledWith(200);

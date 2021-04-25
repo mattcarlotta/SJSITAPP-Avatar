@@ -1,7 +1,6 @@
 import type { Request, Response } from "express";
 import { isValidObjectId } from "mongoose";
 import fs from "fs-extra";
-import mkdir from "mkdirp";
 import sharp from "sharp";
 import { v4 as uuid } from "uuid";
 import User from "~models";
@@ -63,7 +62,7 @@ const updateUserAvatar = async (
     const avatar = `${uuid()}.png`;
     const filepath = `uploads/${avatar}`;
 
-    await mkdir(`${process.cwd()}/uploads`);
+    await fs.ensureDir("uploads");
 
     await sharp(req.file.buffer)
       .resize({
