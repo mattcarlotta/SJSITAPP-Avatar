@@ -1,4 +1,7 @@
 {
+  "compilerOptions": {
+    "noEmit": false
+  },
   "extends": "./tsconfig.json",
   "exclude": ["utils", "__tests__", "**/__tests__"]
 }
