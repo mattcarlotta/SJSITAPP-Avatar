@@ -23,7 +23,7 @@
     "test:cov": "ENV_DEBUG=true ENV_LOAD=.env.test jest --config ./jest.json --coverage",
     "test:failed": "ENV_DEBUG=true ENV_LOAD=.env.test jest --config ./jest.json --watch --onlyFailures",
     "test:watch": "ENV_DEBUG=true ENV_LOAD=.env.test jest --config ./jest.json --watch",
-    "typecheck": "tsc --p ./tsconfig.json"
+    "tsc": "tsc --p ./tsconfig.json"
   },
   "dependencies": {
     "bluebird": "^3.7.2",
