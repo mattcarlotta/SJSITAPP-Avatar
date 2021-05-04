@@ -1,14 +1,12 @@
 {
   "name": "sjsitapp-image-service",
-  "version": "1.0.0",
-  "main": "app.js",
-  "description": "An application for the San Jose Sharks Ice Team.",
+  "version": "2.0.0",
+  "description": "An image microservice to help manage the San Jose Sharks Ice Team scheduling.",
   "repository": "https://github.com/mattcarlotta/SJSITApp-Image",
   "author": "Matt Carlotta",
   "license": "MIT",
-  "private": true,
   "engines": {
-    "node": ">=10",
+    "node": ">=14",
     "npm": ">=6"
   },
   "scripts": {
