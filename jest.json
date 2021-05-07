@@ -31,6 +31,5 @@
     "<rootDir>/index.ts"
   ],
   "globalSetup": "<rootDir>/database/seedDB/index.ts",
-  "globalTeardown": "<rootDir>/database/teardownDB/index.ts",
-  "setupFilesAfterEnv": ["<rootDir>/utils/setupTests.ts"]
+  "globalTeardown": "<rootDir>/database/teardownDB/index.ts"
 }
