@@ -1,4 +1,4 @@
-## SJ Ice Team App Image Microservice [![Codecov](https://img.shields.io/codecov/c/github/mattcarlotta/SJSITApp-Image)](https://codecov.io/gh/mattcarlotta/SJSITApp-Image/branch/master) ![Deployment](https://github.com/mattcarlotta/SJSITAPP-Image/workflows/Deployment/badge.svg)
+## SJ Ice Team Image Microservice ![Deployment](https://github.com/mattcarlotta/SJSITAPP-Image/workflows/Deployment/badge.svg)
 
 An image microservice to help manage the San Jose Sharks Ice Team scheduling.
 
