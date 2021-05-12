@@ -1,19 +1,7 @@
 const tsconfigpaths = require("tsconfig-paths");
+const tsConfig = require("./tsconfig.json");
 
 tsconfigpaths.register({
   baseUrl: "./build",
-  paths: {
-    "~controllers": ["controllers/index"],
-    "~database/*": ["database/*"],
-    "~database": ["database/index"],
-    "~helpers/*": ["helpers/*"],
-    "~helpers": ["helpers/index"],
-    "~logger": ["logger/index"],
-    "~middlewares": ["middlewares/index"],
-    "~models": ["models/index"],
-    "~routes/*": ["routes/*"],
-    "~routes": ["routes/index"],
-    "~strategies": ["strategies/index"],
-    "~utils/*": ["utils/*"]
-  }
+  paths: tsConfig.compilerOptions.paths
 });

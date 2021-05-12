@@ -9,22 +9,24 @@ import { unableToLocateUser } from "~helpers/errors";
 jest.mock("~strategies", () => jest.fn((_req, _res, next) => next()));
 
 jest.mock("multer", () => () => ({
-  single: () => (req: Request, _: Response, next: NextFunction): void => {
-    req.file = {
-      destination: "somewhere",
-      encoding: "utf8",
-      originalname: "sample.name",
-      filename: "somewhere",
-      fieldname: "file",
-      mimetype: "sample.type",
-      path: "sample.url",
-      buffer: Buffer.from("whatever"),
-      size: 123,
-      stream: new Readable({})
-    };
+  single:
+    () =>
+    (req: Request, _: Response, next: NextFunction): void => {
+      req.file = {
+        destination: "somewhere",
+        encoding: "utf8",
+        originalname: "sample.name",
+        filename: "somewhere",
+        fieldname: "file",
+        mimetype: "sample.type",
+        path: "sample.url",
+        buffer: Buffer.from("whatever"),
+        size: 123,
+        stream: new Readable({})
+      };
 
-    return next();
-  }
+      return next();
+    }
 }));
 
 describe("Routing", () => {
