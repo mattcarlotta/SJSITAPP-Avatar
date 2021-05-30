@@ -38,7 +38,7 @@ describe("Routing", () => {
     await mongoose.connection.close();
   });
 
-  it("rejects requests to delete a member's avatar when id is invalid", async done => {
+  it("rejects requests to delete a member's avatar when id is invalid", done => {
     app()
       .delete(`/api/avatar/delete/5ea8496ce6e9625101b952d5`)
       .expect("Content-Type", /json/)
@@ -49,12 +49,12 @@ describe("Routing", () => {
       });
   });
 
-  it("accepts requests to delete a member's avatar", async done => {
+  it("accepts requests to delete a member's avatar", async () => {
     const existingMember = await User.findOne({
       email: "signinmember@test.com"
     });
 
-    app()
+    await app()
       .delete(`/api/avatar/delete/${existingMember._id}`)
       .expect("Content-Type", /json/)
       .expect(200)
@@ -62,7 +62,6 @@ describe("Routing", () => {
         expect(res.body.message).toEqual(
           "Successfully removed your current avatar."
         );
-        done();
       });
   });
 
@@ -77,12 +76,12 @@ describe("Routing", () => {
       });
   });
 
-  it("rejects requests to update a member's avatar when id is invalid", async done => {
+  it("rejects requests to update a member's avatar when id is invalid", async () => {
     const existingMember = await User.findOne({
       email: "signinmember@test.com"
     });
 
-    app()
+    await app()
       .put(`/api/avatar/update/${existingMember._id}`)
       .expect("Content-Type", /json/)
       .expect(200)
@@ -91,7 +90,6 @@ describe("Routing", () => {
           message: "Successfully updated your current avatar.",
           avatar: expect.any(String)
         });
-        done();
       });
   });
 });
