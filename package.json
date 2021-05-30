@@ -1,6 +1,6 @@
 {
   "name": "sjsitapp-image-service",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "An image microservice to help manage the San Jose Sharks Ice Team scheduling.",
   "repository": "https://github.com/mattcarlotta/SJSITApp-Image",
   "author": "Matt Carlotta",
