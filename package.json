@@ -1,6 +1,6 @@
 {
   "name": "sjsitapp-image-service",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "An image microservice to help manage the San Jose Sharks Ice Team scheduling.",
   "repository": "https://github.com/mattcarlotta/SJSITApp-Image",
   "author": "Matt Carlotta",
@@ -12,11 +12,11 @@
   "scripts": {
     "build": "rimraf build && tsc --p ./tsconfig.prod.json",
     "lint": "eslint -c ./.eslintrc --ignore-path ./.eslintignore ./ --ext .ts",
-    "start": "LOAD_CONFIG=prod node -r ./prod-paths.js -r snackables build/index.js",
+    "start": "LOAD_CONFIG=prod node -r ./prod-paths.js -r @noshot/env build/index.js",
     "drop": "LOAD_CONFIG=teardown ts-node --project ./tsconfig.json -r tsconfig-paths/register ./database/teardownDB/index.ts",
     "seed": "LOAD_CONFIG=seed ts-node --project ./tsconfig.json -r tsconfig-paths/register ./database/seedDB/index.ts",
     "dev": "nodemon --config ./nodemon.json",
-    "stage": "LOAD_CONFIG=stage node -r ./prod-paths.js -r snackables build/index.js",
+    "stage": "LOAD_CONFIG=stage node -r ./prod-paths.js -r @noshot/env build/index.js",
     "test": "LOAD_CONFIG=test jest --config ./jest.json --passWithNoTests",
     "test:cov": "LOAD_CONFIG=test jest --config ./jest.json --coverage",
     "test:failed": "LOAD_CONFIG=test jest --config ./jest.json --watch --onlyFailures",
@@ -24,6 +24,7 @@
     "tsc": "tsc --p ./tsconfig.json"
   },
   "dependencies": {
+    "@noshot/env": "^1.0.1",
     "bluebird": "^3.7.2",
     "body-parser": "^1.18.3",
     "chalk": "^4.1.1",
@@ -39,7 +40,6 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.1",
     "sharp": "^0.28.3",
-    "snackables": "^3.0.10",
     "supertest": "^6.1.3",
     "uuid": "^8.3.2"
   },
@@ -53,10 +53,9 @@
     "@types/lodash.get": "^4.4.6",
     "@types/mkdirp": "^1.0.1",
     "@types/moment-timezone": "^0.5.30",
-    "@types/mongoose": "^5.10.5",
+    "@types/mongoose": "^5.11.93",
     "@types/morgan": "^1.9.2",
     "@types/multer": "^1.4.5",
-    "@types/node": "^15.6.1",
     "@types/sharp": "^0.28.3",
     "@types/supertest": "^2.0.11",
     "@types/uuid": "^8.3.0",
@@ -68,7 +67,7 @@
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-jest": "^24.3.6",
     "eslint-plugin-prettier": "^3.4.0",
-    "jest": "^27.0.3",
+    "jest": "^27.0.4",
     "nodemon": "^2.0.7",
     "prettier": "^2.3.0",
     "rimraf": "^3.0.2",

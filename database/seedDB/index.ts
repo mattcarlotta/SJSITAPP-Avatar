@@ -1,4 +1,4 @@
-import "snackables";
+import "@noshot/env";
 import mongoose from "mongoose";
 import { v4 as uuid } from "uuid";
 import { connectToDB, createConnectionToDatabase } from "../index";
