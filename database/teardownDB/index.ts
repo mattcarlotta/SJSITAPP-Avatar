@@ -1,4 +1,4 @@
-import "snackables";
+import "@noshot/env";
 import mongoose from "mongoose";
 import { connectToDB, createConnectionToDatabase } from "../index";
 import { logErrorMessage, logInfoMessage } from "../../logger";
